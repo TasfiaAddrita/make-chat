@@ -5,6 +5,9 @@ $(document).ready( () => {
   // keep track of current user
   let currentUser;
 
+  // get online users
+  socket.emit("get online users");
+
   $("#create-user-btn").click((e) => {
     e.preventDefault();
     currentUser = $("#username-input").val();
@@ -25,7 +28,8 @@ $(document).ready( () => {
     $("#chat-input").val("");
   })
 
-  // socket listeners
+  // SOCKET LISTENERS
+
   socket.on("new user", (username) => {
     console.log(`${username} has joined the chat!`);
     // add new user to online users div
@@ -43,5 +47,18 @@ $(document).ready( () => {
       `
     );
   });
+
+  socket.on("get online users", (onlineUsers) => {
+    for (username in onlineUsers) {
+      $(".users-online").append(`<div class="user-online">${username}</div>`);
+    }
+  });
+
+  socket.on("user has left", (onlineUsers) => {
+    $(".users-online").empty();
+    for (username in onlineUsers) {
+      $(".users-online").append(`<div class="user-online">${username}</div>`);
+    }
+  })
 
 });
