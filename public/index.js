@@ -26,6 +26,11 @@ $(document).ready( () => {
     let message = $("#chat-input").val();
     socket.emit("new message", {sender: currentUser, message: message});
     $("#chat-input").val("");
+  });
+
+  $("#logout-btn").click((e) => {
+    e.preventDefault();
+    socket.emit("logout");
   })
 
   // SOCKET LISTENERS
@@ -59,6 +64,10 @@ $(document).ready( () => {
     for (username in onlineUsers) {
       $(".users-online").append(`<div class="user-online">${username}</div>`);
     }
+  })
+
+  socket.on("redirect", () => {
+    window.location.href = "/";
   })
 
 });

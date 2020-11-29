@@ -8,6 +8,7 @@ module.exports = (io, socket, onlineUsers) => {
     socket["username"] = username;
 
     console.log(`${username} has joined the chat!`);
+
     // send username to all clients currently connected
     io.emit("new user", username);
   });
@@ -21,14 +22,20 @@ module.exports = (io, socket, onlineUsers) => {
 
   socket.on("get online users", () => {
     // send over onlineUsers
-    socket.emit("gen online users", onlineUsers);
+    socket.emit("get online users", onlineUsers);
   });
 
-  socket.on("disconnect", () => {
-    console.log(`${socket.username} has left the chat`);
+  // socket.on("disconnect", () => {
+  //   console.log(`${socket.username} has left the chat`);
+  //   delete onlineUsers[socket.username];
+  //   io.emit("user has left", onlineUsers);
+  // });
+
+  socket.on("logout", () => {
     delete onlineUsers[socket.username];
     io.emit("user has left", onlineUsers);
-  });
+    socket.emit("redirect");
+  })
 
 }
 
