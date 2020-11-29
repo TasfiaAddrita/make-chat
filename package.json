@@ -1,0 +1,25 @@
+{
+  "name": "make-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TasfiaAddrita/make-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TasfiaAddrita/make-chat/issues"
+  },
+  "homepage": "https://github.com/TasfiaAddrita/make-chat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "mongoose": "^5.10.18",
+    "socket.io": "^3.0.3"
+  }
+}
