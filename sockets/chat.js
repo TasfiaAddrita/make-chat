@@ -14,6 +14,8 @@ module.exports = (io, socket, onlineUsers, channels) => {
   });
 
   socket.on("new message", (data) => {
+    // console.log(data)
+    // console.log(channels)
     let sender = data.sender;
     let message = data.message;
     channels[data.channel].push({
@@ -30,11 +32,11 @@ module.exports = (io, socket, onlineUsers, channels) => {
     socket.emit("get online users", onlineUsers);
   });
 
-  // socket.on("disconnect", () => {
-  //   console.log(`${socket.username} has left the chat`);
-  //   delete onlineUsers[socket.username];
-  //   io.emit("user has left", onlineUsers);
-  // });
+  socket.on("disconnect", () => {
+    console.log(`${socket.username} has left the chat`);
+    delete onlineUsers[socket.username];
+    io.emit("user has left", onlineUsers);
+  });
 
   socket.on("logout", () => {
     delete onlineUsers[socket.username];
@@ -43,7 +45,6 @@ module.exports = (io, socket, onlineUsers, channels) => {
   });
 
   socket.on("new channel", (newChannel) => {
-    console.log(newChannel)
     channels[newChannel] = [];
     socket.join(newChannel);
     io.emit("new channel", newChannel);
@@ -51,6 +52,7 @@ module.exports = (io, socket, onlineUsers, channels) => {
       channel: newChannel,
       messages: channels[newChannel]
     });
+    // io.emit("new channel added", newChannel);
   });
 
   socket.on("user changed channel", (newChannel) => {
@@ -60,6 +62,10 @@ module.exports = (io, socket, onlineUsers, channels) => {
       messages: channels[newChannel]
     });
   });
+
+  socket.on("get all channels", () => {
+    socket.emit("load all channels", channels);
+  })
 
 }
 

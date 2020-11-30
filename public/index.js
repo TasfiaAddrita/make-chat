@@ -8,12 +8,16 @@ $(document).ready( () => {
   // get online users
   socket.emit("get online users");
 
+  // get all channels
+  socket.emit("get all channels");
+
   // users should be at general channel by default
   socket.emit("user changed channel", "general");
 
   // users can change the channel
   $(document).on("click", ".channel", (e) => {
-    let newChannel = e.target.textContext;
+    e.preventDefault();
+    let newChannel = e.target.textContent;
     socket.emit("user changed channel", newChannel);
   })
 
@@ -118,4 +122,11 @@ $(document).ready( () => {
     });
   });
 
+  socket.on("load all channels", (channels) => {
+    for (channel in channels) {
+      if (channel != "general") {
+        $(".channels").append(`<div class="channel">${channel}</div>`);
+      }
+    }
+  })
 });
