@@ -16,8 +16,13 @@ module.exports = (io, socket, onlineUsers, channels) => {
   socket.on("new message", (data) => {
     let sender = data.sender;
     let message = data.message;
-    console.log(`${sender} sent this message ${message}`);
-    io.emit("new message", sender, message);
+    channels[data.channel].push({
+      sender: sender,
+      message: message
+    });
+    // console.log(`${sender} sent this message ${message}`);
+    // io.emit("new message", sender, message);
+    io.to(data.channel).emit("new message", data);
   });
 
   socket.on("get online users", () => {

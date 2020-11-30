@@ -23,8 +23,13 @@ $(document).ready( () => {
 
   $("#send-chat-btn").click((e) => {
     e.preventDefault();
+    let channel = $(".channel-current").text();
     let message = $("#chat-input").val();
-    socket.emit("new message", {sender: currentUser, message: message});
+    socket.emit("new message", {
+      sender: currentUser, 
+      message: message,
+      channel: channel
+    });
     $("#chat-input").val("");
   });
 
@@ -50,16 +55,19 @@ $(document).ready( () => {
     $(".users-online").append(`<div class="user-online">${username}</div>`);
   });
 
-  socket.on("new message", (sender, message) => {
+  socket.on("new message", (data) => {
     // add new message to message container div
-    $(".message-container").append(
-      `
+    let currentChannel = $(".channel-current").text();
+    if (currentChannel == data.channel) {
+      $(".message-container").append(
+        `
         <div class="message">
-          <div class="message-user">${sender}</div>
-          <div class="message-text">${message}</div>
+          <div class="message-user">${data.sender}</div>
+          <div class="message-text">${data.message}</div>
         </div>
       `
-    );
+      );
+    }
   });
 
   socket.on("get online users", (onlineUsers) => {
