@@ -31,6 +31,15 @@ $(document).ready( () => {
   $("#logout-btn").click((e) => {
     e.preventDefault();
     socket.emit("logout");
+  });
+
+  $("#new-channel-btn").click(() => {
+    let newChannel = $("#new-channel-input").val();
+
+    if (newChannel.length > 0) {
+      socket.emit("new channel", newChannel);
+      $("#new-channel-input").val("");
+    }
   })
 
   // SOCKET LISTENERS
