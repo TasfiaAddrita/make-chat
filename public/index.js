@@ -8,6 +8,15 @@ $(document).ready( () => {
   // get online users
   socket.emit("get online users");
 
+  // users should be at general channel by default
+  socket.emit("user changed channel", "general");
+
+  // users can change the channel
+  $(document).on("click", ".channel", (e) => {
+    let newChannel = e.target.textContext;
+    socket.emit("user changed channel", newChannel);
+  })
+
   $("#create-user-btn").click((e) => {
     e.preventDefault();
     currentUser = $("#username-input").val();
