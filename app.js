@@ -15,9 +15,11 @@ app.use("/public", express.static("public"));
 // socket.io
 const io = require("socket.io")(server);
 let onlineUsers = {};
+let channels = {"general": []};
+
 io.on("connection", (socket) => {
   // console.log("New user connected");
-  require("./sockets/chat.js")(io, socket, onlineUsers);
+  require("./sockets/chat.js")(io, socket, onlineUsers, channels);
 })
 
 // ROUTES
